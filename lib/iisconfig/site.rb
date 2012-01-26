@@ -8,6 +8,7 @@ module IISConfig
     def initialize
       @bindings = []
       @applications = []
+      @virtual_directories = []
       @path = '/'
     end
 
@@ -30,6 +31,10 @@ module IISConfig
 
     def application(&block)
       add_instance(@applications, IISConfig::Application, block)
+    end
+
+    def virtual_directory(&block)
+      add_instance(@virtual_directories, IISConfig::VirtualDirectory, block)
     end
 
     def delete
@@ -55,6 +60,10 @@ module IISConfig
 
       @applications.each do |s|
         commands += s.build_commands @name, app_pool
+      end
+
+      @virtual_directories.each do |s|
+        commands += s.build_commands "#{name}/"
       end
 
       commands

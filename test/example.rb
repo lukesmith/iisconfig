@@ -18,6 +18,18 @@ app_pool do |p|
       a.name :MyApp
       a.path '/MyApp'
       a.physical_path 'c:\\temp\\MySite\\MyApp'
+
+      a.virtual_directory do |v|
+        v.name :MyAppVirtualDirectory
+        v.path '/AppVDir'
+        v.physical_path 'c:\\temp\\MySite\MyVDir'
+      end
+    end
+
+    s.virtual_directory do |v|
+      v.name :MySiteVirtualDirectory
+      v.path '/SiteVDir'
+      v.physical_path 'c:\\temp\\MySite\MyVDir'
     end
   end
 end
