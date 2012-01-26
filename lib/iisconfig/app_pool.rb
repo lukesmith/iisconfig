@@ -70,19 +70,10 @@ module IISConfig
       commands << %W{set apppool /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
       @sites.each do |s|
-        commands += s.build_commands
-        commands << %W{set site /site.name:#{s.name} /[path='/'].applicationPool:#{@name}}
+        commands += s.build_commands @name
       end
 
       commands
-    end
-
-    private
-
-    def add_instance(collection, type, block)
-      instance = type.new
-      collection << instance
-      block.call instance if block
     end
 
   end

@@ -22,6 +22,14 @@ module IISConfig
       exists
     end
 
+    protected
+
+    def add_instance(collection, type, block)
+      instance = type.new
+      collection << instance
+      block.call instance if block
+    end
+
   end
 
 end
