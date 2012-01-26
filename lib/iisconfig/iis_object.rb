@@ -7,7 +7,7 @@ module IISConfig
     def exist?(type, name)
       args = []
       args << 'LIST'
-      args << type.to_s
+      args << type.to_s.upcase
       args << '/xml'
       result = Runner.execute_command args
 

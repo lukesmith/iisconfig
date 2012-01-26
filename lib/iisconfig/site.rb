@@ -33,13 +33,13 @@ module IISConfig
     end
 
     def delete
-      %W{DELETE site #{@name}}
+      %W{DELETE SITE #{@name}}
     end
 
     def add
       args = []
       args << 'ADD'
-      args << 'site'
+      args << 'SITE'
       args << "/name:#{@name}"
       args << "/bindings:\"#{@bindings.join('","')}\""
       args << "/physicalPath:#{@physical_path}"
@@ -51,11 +51,10 @@ module IISConfig
       commands = []
       commands << delete if exist? :site, @name
       commands << add
-      commands << %W{set site /site.name:#{@name} /[path='#{@path}'].applicationPool:#{app_pool}}
+      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{app_pool}}
 
       @applications.each do |s|
         commands += s.build_commands @name, app_pool
-        #commands << %W{set site /site.name:#{s.name} /[path='/'].applicationPool:#{@name}}
       end
 
       commands

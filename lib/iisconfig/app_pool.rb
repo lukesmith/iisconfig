@@ -46,13 +46,13 @@ module IISConfig
     end
 
     def delete
-      %W{DELETE apppool #{@name}}
+      %W{DELETE APPPOOL #{@name}}
     end
 
     def add
       args = []
       args << 'ADD'
-      args << 'apppool'
+      args << 'APPPOOL'
       args << "/name:#{@name}"
       args << "/managedRuntimeVersion:#{@runtime_version}"
       args << "/managedPipelineMode:#{pipeline_mode}"
@@ -65,9 +65,9 @@ module IISConfig
       commands << delete if exist? :apppool, @name
       commands << add
       @process_model.settings.each do |d|
-        commands << %W{set config /section:applicationPools /[name='#{@name}'].processModel.#{d[:key]}:#{d[:value]}}
+        commands << %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{d[:key]}:#{d[:value]}}
       end
-      commands << %W{set apppool /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
+      commands << %W{SET APPPOOL /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
       @sites.each do |s|
         commands += s.build_commands @name
