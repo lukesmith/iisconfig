@@ -1,6 +1,8 @@
+require 'iis_object'
+
 module IISConfig
 
-  class Site
+  class Site < IISObject
 
     def initialize
       @bindings = []
@@ -28,10 +30,17 @@ module IISConfig
       args << 'ADD'
       args << 'site'
       args << "/name:#{@name}"
-      args << "/bindings:#{@bindings[0]}"
+      args << "/bindings:\"#{@bindings.join('","')}\""
       args << "/physicalPath:#{@path}"
 
       args
+    end
+
+    def build_commands
+      commands = []
+      commands << delete if exist? :site, @name
+      commands << add
+      commands
     end
 
   end

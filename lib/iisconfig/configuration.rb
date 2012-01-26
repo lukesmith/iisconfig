@@ -3,7 +3,7 @@ $:.push File.expand_path(File.dirname(__FILE__))
 require 'rexml/document'
 require 'app_pool'
 
-module IISConig
+module IISConfig
 
   class IISConfiguration
 
@@ -21,49 +21,17 @@ module IISConig
 
     def run
       @app_pools.each do |p|
-        execute_command p.delete if exist? :apppool, p.name
-        execute_command p.add
-
-        p.sites.each do |s|
-          execute_command s.delete if exist? :site, s.name
-          execute_command s.add
-        end
+        commands = p.build_commands
+        Runner.run_commands commands
       end
-    end
-
-    def exist?(type, name)
-      args = []
-      args << 'LIST'
-      args << type.to_s
-      args << '/xml'
-      result = execute_command args
-
-      exists = false
-      doc = REXML::Document.new(result)
-
-      doc.elements.each("appcmd/#{type.to_s.upcase}[@#{type.to_s.upcase}.NAME='#{name}']") do
-        exists = true
-      end
-
-      exists
     end
 
     private
 
-     def add_instance(collection, type, block)
+    def add_instance(collection, type, block)
       instance = type.new
       collection << instance
       block.call instance if block
-    end
-
-    def execute_command(args)
-      args.flatten!
-      tool = :appcmd
-
-      puts  "  #{tool.to_s} #{args.join(' ')}"
-      result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}`
-      raise Exception.new($?.exitstatus) unless result
-      result
     end
 
   end
