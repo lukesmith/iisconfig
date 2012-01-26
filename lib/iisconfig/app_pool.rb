@@ -34,11 +34,7 @@ module IISConfig
     end
 
     def delete
-      args = []
-      args << 'DELETE'
-      args << 'apppool'
-      args << "#{@name}"
-      args
+      %W{DELETE apppool #{@name}}
     end
 
     def add
