@@ -21,12 +21,17 @@ module IISConig
 
     def run
       @app_pools.each do |p|
-        execute_command p.delete if exists? :apppool, p.name
+        execute_command p.delete if exist? :apppool, p.name
         execute_command p.add
+
+        p.sites.each do |s|
+          execute_command s.delete if exist? :site, s.name
+          execute_command s.add
+        end
       end
     end
 
-    def exists?(type, name)
+    def exist?(type, name)
       args = []
       args << 'LIST'
       args << type.to_s

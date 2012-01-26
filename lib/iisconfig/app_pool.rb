@@ -1,3 +1,5 @@
+require 'site'
+
 module IISConfig
 
   class AppPool
@@ -5,6 +7,7 @@ module IISConfig
     def initialize
       @pipeline_mode = :Classic
       @runtime_version = :'v2.0'
+      @sites = []
     end
 
     def name(name = nil)
@@ -20,6 +23,14 @@ module IISConfig
     def pipeline_mode(mode = nil)
       @pipeline_mode = mode unless mode.nil?
       @pipeline_mode
+    end
+
+    def site(&block)
+      add_instance(@sites, IISConfig::Site, block)
+    end
+
+    def sites
+      @sites
     end
 
     def delete
@@ -38,6 +49,14 @@ module IISConfig
       args << "/managedRuntimeVersion:#{@runtime_version}"
       args << "/managedPipelineMode:#{pipeline_mode}"
       args
+    end
+
+    private
+
+    def add_instance(collection, type, block)
+      instance = type.new
+      collection << instance
+      block.call instance if block
     end
 
   end
