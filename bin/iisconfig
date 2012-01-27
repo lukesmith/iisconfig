@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+$:.push File.expand_path(File.dirname(File.realpath(__FILE__)) + '/../lib')
+
+require "rainbow"
+require "iisconfig"
+
+# Invoke the command
+exit GLI.run(ARGV)
