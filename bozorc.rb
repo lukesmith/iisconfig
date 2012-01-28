@@ -4,6 +4,7 @@ package_with :rubygems
 
 resolve_dependencies_with :bundler
 
+publish_with :rubygems
 post_publish :git_tag_release
 
 with_hook :teamcity
