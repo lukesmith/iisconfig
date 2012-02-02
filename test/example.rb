@@ -33,3 +33,12 @@ app_pool do |p|
     end
   end
 end
+
+ftp_site do |s|
+  s.name :MyFtp
+  s.binding 'ftp://*:21'
+  s.physical_path 'c:\\temp\\MyFtp'
+  s.enable_authentication :anonymous
+  s.allow_authorization [:read, :write], { :users => '*', :roles => '' }
+end
+

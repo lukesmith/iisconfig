@@ -1,4 +1,5 @@
 require 'site'
+require 'ftp_site'
 require 'iis_object'
 require 'process_model'
 
@@ -10,6 +11,7 @@ module IISConfig
       @pipeline_mode = :Classic
       @runtime_version = :'v2.0'
       @sites = []
+      @ftp_sites = []
       @process_model = ProcessModel.new
       @enable_32bit_app_on_win64 = false
     end
@@ -39,6 +41,10 @@ module IISConfig
 
     def site(&block)
       add_instance(@sites, IISConfig::Site, block)
+    end
+
+    def ftp_site(&block)
+      add_instance(@ftp_sites, IISConfig::FtpSite, block)
     end
 
     def sites
@@ -78,6 +84,11 @@ module IISConfig
       commands << %W{SET APPPOOL /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
       @sites.each do |s|
+        s.app_pool @name.to_sym
+        commands += s.build_commands
+      end
+
+      @ftp_sites.each do |s|
         s.app_pool @name.to_sym
         commands += s.build_commands
       end
