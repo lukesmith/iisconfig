@@ -51,7 +51,7 @@ module IISConfig
       args << 'SITE'
       args << "/name:#{@name}"
       args << "/bindings:\"#{@bindings.join('","')}\""
-      args << "/physicalPath:#{@physical_path}"
+      args << "/physicalPath:#{@physical_path.gsub(/\//, '\\')}"
 
       args
     end
