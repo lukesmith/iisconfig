@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.files         = Dir['*/**/*'] + Dir['VERSION']
   s.test_files    = Dir['test/**/*']
-  s.executables   = Dir['iisconfig']
+  s.executables   = 'iisconfig'
   s.require_path  = "lib"
   s.bindir        = 'bin'
 
