@@ -59,6 +59,14 @@ module IISConfig
       args
     end
 
+    def required_paths
+      paths = []
+      @sites.each do |s|
+        paths += s.required_paths
+      end
+      paths
+    end
+
     def build_commands
       commands = []
 

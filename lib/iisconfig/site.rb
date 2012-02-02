@@ -56,6 +56,12 @@ module IISConfig
       args
     end
 
+    def required_paths
+      paths = []
+      paths << @physical_path
+      paths
+    end
+
     def build_commands()
       commands = []
       commands << delete if exist? :site, @name

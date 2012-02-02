@@ -28,11 +28,19 @@ module IISConfig
       @app_pools.each do |p|
         commands = p.build_commands
         Runner.run_commands commands
+
+        p.required_paths.each do |path|
+          FileUtils.mkdir_p path unless Dir.exist? path
+        end
       end
 
       @sites.each do |p|
         commands = p.build_commands
         Runner.run_commands commands
+
+        p.required_paths.each do |path|
+          FileUtils.mkdir_p path unless Dir.exist? path
+        end
       end
     end
 
