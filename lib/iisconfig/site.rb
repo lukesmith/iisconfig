@@ -25,6 +25,10 @@ module IISConfig
       @path = path
     end
 
+    def app_pool(pool)
+      @app_pool = pool
+    end
+
     def physical_path(path)
       @physical_path = path
     end
@@ -52,15 +56,15 @@ module IISConfig
       args
     end
 
-    def build_commands(app_pool = nil)
+    def build_commands()
       commands = []
       commands << delete if exist? :site, @name
       commands << add
-      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{app_pool}} unless app_pool.nil?
-      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}']} if app_pool.nil?
+      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{@app_pool}} unless @app_pool.nil?
+      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}']} if @app_pool.nil?
 
       @applications.each do |s|
-        commands += s.build_commands @name, app_pool
+        commands += s.build_commands @name, @app_pool
       end
 
       @virtual_directories.each do |s|

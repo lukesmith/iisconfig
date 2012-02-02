@@ -70,7 +70,8 @@ module IISConfig
       commands << %W{SET APPPOOL /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
       @sites.each do |s|
-        commands += s.build_commands @name
+        s.app_pool @name.to_sym
+        commands += s.build_commands
       end
 
       commands
