@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "iisconfig"
 
-  s.files         = Dir['*/**/*'] + Dir['VERSION']
+  s.files         = Dir['lib/**/*'] + Dir['VERSION']
   s.test_files    = Dir['test/**/*']
   s.executables   = 'iisconfig'
   s.require_path  = "lib"
