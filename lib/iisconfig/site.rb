@@ -52,11 +52,12 @@ module IISConfig
       args
     end
 
-    def build_commands(app_pool)
+    def build_commands(app_pool = nil)
       commands = []
       commands << delete if exist? :site, @name
       commands << add
-      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{app_pool}}
+      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{app_pool}} unless app_pool.nil?
+      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}']} if app_pool.nil?
 
       @applications.each do |s|
         commands += s.build_commands @name, app_pool

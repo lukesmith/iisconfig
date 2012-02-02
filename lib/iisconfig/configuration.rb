@@ -9,10 +9,15 @@ module IISConfig
 
     def initialize
       @app_pools = []
+      @sites = []
     end
 
     def app_pool(&block)
       add_instance @app_pools, IISConfig::AppPool, block
+    end
+
+    def site(&block)
+      add_instance @sites, IISConfig::Site, block
     end
     
     def load(path)
@@ -21,6 +26,11 @@ module IISConfig
 
     def run
       @app_pools.each do |p|
+        commands = p.build_commands
+        Runner.run_commands commands
+      end
+
+      @sites.each do |p|
         commands = p.build_commands
         Runner.run_commands commands
       end
