@@ -36,6 +36,10 @@ module IISConfig
       @allow_authorization << { :permissions => permissions, :access => access }
     end
 
+    def allow_ssl
+      @ssl = :allow
+    end
+
     def delete
       %W{DELETE SITE #{@name}}
     end
@@ -73,6 +77,11 @@ module IISConfig
 
       @authentication.each do |a|
         commands << %W{SET CONFIG -section:system.applicationHost/sites /[name='#{@name}'].ftpServer.security.authentication.#{a}Authentication.enabled:true}
+      end
+
+      unless @ssl.nil?
+        commands << %W{SET CONFIG -section:system.applicationHost/sites /[name='#{@name}'].ftpServer.security.ssl.controlChannelPolicy:"Ssl#{@ssl.capitalize}"}
+        commands << %W{SET CONFIG -section:system.applicationHost/sites /[name='#{@name}'].ftpServer.security.ssl.dataChannelPolicy:"Ssl#{@ssl.capitalize}"}
       end
 
       commands
