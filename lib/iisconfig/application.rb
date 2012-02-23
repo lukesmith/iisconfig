@@ -30,7 +30,7 @@ module IISConfig
     def build_commands(site, app_pool)
       commands = []
 
-      commands << %W{ADD APP /site.name:#{site} /path:#{@path} /physicalPath:"#{@physical_path}"}
+      commands << %W{ADD APP /site.name:#{site} /path:#{@path} /physicalPath:"#{@physical_path.gsub(/\//, '\\')}"}
 
       app_pool = @app_pool unless @app_pool.nil?
       commands << %W{SET SITE /site.name:#{site}/#{@name} /[path='#{@path}'].applicationPool:#{app_pool}}
