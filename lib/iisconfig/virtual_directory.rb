@@ -20,7 +20,7 @@ module IISConfig
     def build_commands(application)
       commands = []
 
-      commands << %W{ADD VDIR /app.name:#{application} /path:#{@path} /physicalPath:"#{@physical_path.gsub(/\//, '\\')}"}
+      commands << %W{ADD VDIR /app.name:#{application} /path:#{@path} /physicalPath:#{@physical_path.gsub(/\//, '\\')}}
 
       commands
     end
