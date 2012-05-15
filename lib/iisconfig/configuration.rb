@@ -13,6 +13,8 @@ module IISConfig
       @app_pools = []
       @sites = []
       @ftp_sites = []
+      @before = []
+      @after = []
     end
 
     def app_pool(&block)
@@ -26,15 +28,27 @@ module IISConfig
     def ftp_site(&block)
       add_instance @ftp_sites, IISConfig::FtpSite, block
     end
+
+    def before(&block)
+      @before << block
+    end
+
+    def after(&block)
+      @after << block
+    end
     
     def load(path)
       instance_eval IO.read(path), path
     end
 
     def run
+      @before.each { |a| a.call }
+
       execute @app_pools
       execute @sites
       execute @ftp_sites
+
+      @after.each { |a| a.call }
     end
 
     private

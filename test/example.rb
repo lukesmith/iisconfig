@@ -1,3 +1,7 @@
+before do
+  puts 'before'
+end
+
 app_pool do |p|
   p.name :MyAppPool
   p.runtime_version :'v2.0'
@@ -8,8 +12,8 @@ app_pool do |p|
   p.site do |s|
     s.name :MySite
     s.path '/'
-    s.binding 'http/*:80:localhost'
-    s.binding 'http/*:80:test.local'
+    s.binding 'http/*:8090:localhost'
+    s.binding 'http/*:8090:test.local'
     s.binding "net.tcp/808:*"
     s.binding "net.pipe/*"
     s.physical_path 'c:\\temp\\MySite'
@@ -43,3 +47,6 @@ ftp_site do |s|
   s.allow_ssl
 end
 
+after do
+  puts "done"
+end
