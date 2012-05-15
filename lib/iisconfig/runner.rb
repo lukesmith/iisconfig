@@ -7,8 +7,8 @@ module IISConfig
       tool = :appcmd
 
       puts  "  #{tool.to_s} #{args.join(' ')}"
-      result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}`
-      raise Exception.new($?.exitstatus) unless result
+      result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}"`
+      raise Exception.new($?.exitstatus) unless $?.success?
       result
     end
 
