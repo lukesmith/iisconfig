@@ -42,6 +42,7 @@ module IISConfig
     end
 
     def delete
+      return %W(DELETE SITE \"#{@name}\") if @name.include?(' ')
       %W{DELETE SITE #{@name}}
     end
 
@@ -49,7 +50,7 @@ module IISConfig
       args = []
       args << 'ADD'
       args << 'SITE'
-      args << "/name:#{@name}"
+      args << "/name:\"#{@name}\""
       args << "/bindings:\"#{@bindings.join('","')}\""
       args << "/physicalPath:#{@physical_path.gsub(/\//, '\\')}"
 
@@ -66,8 +67,8 @@ module IISConfig
       commands = []
       commands << delete if exist? :site, @name
       commands << add
-      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}'].applicationPool:#{@app_pool}} unless @app_pool.nil?
-      commands << %W{SET SITE /site.name:#{@name} /[path='#{@path}']} if @app_pool.nil?
+      commands << %W{SET SITE /site.name:\"#{@name}\" /[path='#{@path}'].applicationPool:#{@app_pool}} unless @app_pool.nil?
+      commands << %W{SET SITE /site.name:\"#{@name}\" /[path='#{@path}']} if @app_pool.nil?
 
       @applications.each do |s|
         commands += s.build_commands @name, @app_pool
