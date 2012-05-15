@@ -47,22 +47,6 @@ ftp_site do |s|
   s.allow_ssl
 end
 
-app_pool do |p|
-  p.name 'Default-Web-Site'
-  p.runtime_version :'v2.0'
-  p.pipeline_mode 'Classic'
-  p.process_model do |pm|
-    pm.identity_type 'NetworkService'
-  end
-
-  p.site do |s|
-    s.name 'Default Web Site'
-    s.path '/'
-    s.physical_path 'C:\\inetpub\\wwwroot'
-    s.binding "http/*:8088:localhost"
-  end
-end
-
 after do
   puts "done"
 end
