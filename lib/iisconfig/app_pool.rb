@@ -73,6 +73,16 @@ module IISConfig
       paths
     end
 
+    def recycle
+      args = []
+      if exist? :apppool, @name
+        args << 'RECYCLE'
+        args << 'APPPOOL'
+        args << "/apppool.name:#{@name}"
+      end
+      args
+    end
+
     def build_commands
       commands = []
 

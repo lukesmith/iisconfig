@@ -8,13 +8,23 @@ require 'site'
 module IISConfig
 
   class IISConfiguration
+    @@dry_run = false
 
-    def initialize
+    def initialize(options = {})
+      @options = {recycle_apppools: false}.merge(options)
       @app_pools = []
       @sites = []
       @ftp_sites = []
       @before = []
       @after = []
+    end
+
+    def self.dry_run=dry_run
+      @@dry_run = dry_run
+    end
+
+    def self.dry_run?
+      @@dry_run
     end
 
     def app_pool(&block)
@@ -44,14 +54,29 @@ module IISConfig
     def run
       @before.each { |a| a.call }
 
-      execute @app_pools
-      execute @sites
-      execute @ftp_sites
+      if @options[:recycle_apppools]
+        recycle_application_pools
+      else
+        rebuild_all
+      end
 
       @after.each { |a| a.call }
     end
 
     private
+
+    def rebuild_all
+      execute @app_pools
+      execute @sites
+      execute @ftp_sites
+    end
+
+    def recycle_application_pools
+      @app_pools.each do |p|
+        commands = p.recycle
+        Runner.run_commands [commands] unless commands.empty?
+      end
+    end
 
     def execute(objects)
       objects.each do |p|

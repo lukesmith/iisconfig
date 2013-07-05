@@ -7,9 +7,12 @@ module IISConfig
       tool = :appcmd
 
       puts  "  #{tool.to_s} #{args.join(' ')}"
-      result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}"`
-      raise Exception.new($?.exitstatus) unless $?.success?
-      result
+
+      unless IISConfiguration.dry_run?
+        result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}"`
+        raise Exception.new($?.exitstatus) unless $?.success?
+        result
+      end
     end
 
     def self.run_commands(commands)
