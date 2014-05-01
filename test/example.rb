@@ -7,6 +7,7 @@ app_pool do |p|
   p.runtime_version :'v2.0'
   p.process_model do |m|
     m.identity_type :NetworkService
+    m.idle_timeout '0.00:30:00'
   end
 
   p.site do |s|

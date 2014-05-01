@@ -88,8 +88,8 @@ module IISConfig
 
       commands << delete if exist? :apppool, @name
       commands << add
-      @process_model.settings.each do |d|
-        commands << %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{d[:key]}:#{d[:value]}}
+      @process_model.settings.each_pair do |key, value|
+        commands << %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{key}:#{value}}
       end
       commands << %W{SET APPPOOL /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
