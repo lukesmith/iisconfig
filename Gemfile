@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem 'bozo', :git => 'git@github.com:zopaUK/bozo.git'
-  gem 'bozo-scripts', :git => 'git@github.com:zopaUK/bozo-scripts.git'
+  gem 'bozo', '~> 0.3.4'
+  gem 'bozo-scripts', '~> 0.1.11'
 end

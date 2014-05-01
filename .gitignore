@@ -5,3 +5,7 @@ pkg/*
 .idea
 build
 .DS_Store
+vendor/
+
+bin/
+!bin/iisconfig
