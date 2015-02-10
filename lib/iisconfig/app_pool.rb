@@ -35,6 +35,11 @@ module IISConfig
       @enable_32bit_app_on_win64 = value
     end
 
+    def start_mode(value)
+      @start_mode = value
+      @start_mode
+    end
+
     def process_model
       yield @process_model
     end
@@ -62,6 +67,9 @@ module IISConfig
       args << "/name:#{@name}"
       args << "/managedRuntimeVersion:#{@runtime_version}"
       args << "/managedPipelineMode:#{pipeline_mode}"
+      if @start_mode
+        args << "//startMode:#{@start_mode}"
+      end
       args
     end
 

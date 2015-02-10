@@ -5,6 +5,7 @@ end
 app_pool do |p|
   p.name :MyAppPool
   p.runtime_version :'v2.0'
+  p.start_mode 'AlwaysRunning'
   p.process_model do |m|
     m.identity_type :NetworkService
     m.idle_timeout '0.00:30:00'
