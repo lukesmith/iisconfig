@@ -68,7 +68,7 @@ module IISConfig
       args << "/managedRuntimeVersion:#{@runtime_version}"
       args << "/managedPipelineMode:#{pipeline_mode}"
       if @start_mode
-        args << "//startMode:#{@start_mode}"
+        args << "/startMode:#{@start_mode}"
       end
       args
     end
