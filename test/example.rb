@@ -24,6 +24,7 @@ app_pool do |p|
       a.name :MyApp
       a.path '/MyApp'
       a.physical_path 'c:\\temp\\MySite\\MyApp'
+      a.auto_start_provider "example", "Example.Class, Example"
 
       a.virtual_directory do |v|
         v.name :MyAppVirtualDirectory
