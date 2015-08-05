@@ -40,9 +40,11 @@ module IISConfig
       app_pool = @app_pool unless @app_pool.nil?
       commands << %W{SET SITE /site.name:#{site}/#{@name} /[path='#{@path}'].applicationPool:#{app_pool}}
 
-      commands << %W{set config -section:system.applicationHost/serviceAutoStartProviders /-"[name='#{@start_provider_name}']" /commit:apphost} if @start_provider_name
-      commands << %W{set config -section:system.applicationHost/serviceAutoStartProviders /+"[name='#{@start_provider_name}',type='#{@start_provider_type}']" /commit:apphost} if @start_provider_name
-      commands << %W{set app #{site}/#{@name} /serviceAutoStartEnabled:True /serviceAutoStartProvider:#{@start_provider_name}} if @start_provider_name
+      if @start_provider_name
+        commands << %W{set config -section:system.applicationHost/serviceAutoStartProviders /-"[name='#{@start_provider_name}']" /commit:apphost} if start_provider_exist? @start_provider_name
+        commands << %W{set config -section:system.applicationHost/serviceAutoStartProviders /+"[name='#{@start_provider_name}',type='#{@start_provider_type}']" /commit:apphost}
+        commands << %W{set app #{site}/#{@name} /serviceAutoStartEnabled:True /serviceAutoStartProvider:#{@start_provider_name}}
+      end
 
       @virtual_directories.each do |s|
         commands += s.build_commands "#{site}/#{@name}"
