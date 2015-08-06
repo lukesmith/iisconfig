@@ -9,6 +9,7 @@ module IISConfig
 
   class IISConfiguration
     @@dry_run = false
+    @@verbose = false
 
     def initialize(options = {})
       @options = {recycle_apppools: false}.merge(options)
@@ -25,6 +26,14 @@ module IISConfig
 
     def self.dry_run?
       @@dry_run
+    end
+
+    def self.verbose=verbose
+      @@verbose = verbose
+    end
+
+    def self.verbose?
+      @@verbose
     end
 
     def app_pool(&block)
@@ -46,7 +55,7 @@ module IISConfig
     def after(&block)
       @after << block
     end
-    
+
     def load(path)
       instance_eval IO.read(path), path
     end
@@ -98,4 +107,3 @@ module IISConfig
   end
 
 end
-

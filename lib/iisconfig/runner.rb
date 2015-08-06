@@ -10,6 +10,7 @@ module IISConfig
 
       unless IISConfiguration.dry_run?
         result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}"`
+        puts result if IISConfiguration.verbose?
         raise Exception.new($?.exitstatus) unless $?.success?
         result
       end

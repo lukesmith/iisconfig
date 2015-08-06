@@ -22,6 +22,19 @@ module IISConfig
       exists
     end
 
+    def start_provider_exist?(name)
+      result = Runner.execute_command %W{ LIST CONFIG /section:serviceAutoStartProviders }
+      exists = false
+      doc = REXML::Document.new(result)
+
+      doc.each_element("//add[@name='#{name}']") do |e|
+        exists = true
+        break
+      end
+
+      exists
+    end
+
     protected
 
     def add_instance(collection, type, block)

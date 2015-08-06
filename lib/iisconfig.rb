@@ -20,11 +20,15 @@ command :execute, :e do |c|
   c.desc 'Dry run'
   c.switch :'dry-run'
 
+  c.desc 'Verbose'
+  c.switch :'verbose'
+
   c.action do |global_options, options, args|
     opts = {}
     opts[:recycle_apppools] = true if options[:'recycle-apppools']
 
     IISConfig::IISConfiguration.dry_run = true if options[:'dry-run']
+    IISConfig::IISConfiguration.verbose = true if options[:'verbose']
 
     config = IISConfig::IISConfiguration.new opts
 
@@ -37,6 +41,3 @@ command :execute, :e do |c|
     end
   end
 end
-
-
-
