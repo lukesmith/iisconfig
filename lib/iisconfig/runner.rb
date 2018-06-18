@@ -3,13 +3,16 @@ module IISConfig
   class Runner
 
     def self.execute_command(args)
-      args.flatten!
+      args = [args].flatten
       tool = :appcmd
 
-      puts  "  #{tool.to_s} #{args.join(' ')}"
+      safe_command = args.map { |v| v.is_a?(IISConfig::Command) ? v.safe_command : v }
+      command = args.map { |v| v.is_a?(IISConfig::Command) ? v.command : v }
+
+      puts  "  #{tool.to_s} #{safe_command.join(' ')}"
 
       unless IISConfiguration.dry_run?
-        result = `c:/windows/system32/inetsrv/appcmd #{args.join(' ')}"`
+        result = `c:/windows/system32/inetsrv/appcmd #{command.join(' ')}"`
         puts result if IISConfiguration.verbose?
         raise Exception.new($?.exitstatus) unless $?.success?
         result

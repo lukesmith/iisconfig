@@ -1,6 +1,7 @@
 $:.push File.expand_path(File.dirname(__FILE__))
 
 require 'rexml/document'
+require 'sensitive_value'
 require 'app_pool'
 require 'ftp_site'
 require 'site'

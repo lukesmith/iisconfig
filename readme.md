@@ -23,6 +23,20 @@ To perform a dry run, and to see what `appcmds` will be executed add the switch 
 iisconfig e config.iis --dry-run
 ```
 
+Within the `config.iis` `SensitiveValue` can be used to store passwords or any other sensitive
+data and prevent it being logged.
+
+E.g.
+
+```ruby
+p.process_model do |m|
+  m.identity_type :SpecificUser
+  m.idle_timeout '0.00:30:00'
+  m.username ENV['APP_POOL_USERNAME']
+  m.password SensitiveValue.new(ENV['APP_POOL_PASSWORD'])
+end
+```
+
 ## Notes
 
 `iisconfig` must be run with administrative privileges.

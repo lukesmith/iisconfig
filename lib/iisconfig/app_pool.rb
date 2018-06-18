@@ -2,6 +2,7 @@ require 'site'
 require 'ftp_site'
 require 'iis_object'
 require 'process_model'
+require 'command'
 
 module IISConfig
 
@@ -97,7 +98,14 @@ module IISConfig
       commands << delete if exist? :apppool, @name
       commands << add
       @process_model.settings.each_pair do |key, value|
-        commands << %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{key}:#{value}}
+        safe_command = %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{key}:#{value}}
+
+        if value.is_a?(IISConfig::SensitiveValue)
+          c = %W{SET CONFIG /section:applicationPools /[name='#{@name}'].processModel.#{key}:#{value.value}}
+          commands << IISConfig::Command.new(c, safe_command)
+        else
+          commands << safe_command
+        end
       end
       commands << %W{SET APPPOOL /apppool.name:#{@name} /enable32BitAppOnWin64:#{@enable_32bit_app_on_win64}}
 
