@@ -22,5 +22,4 @@ Gem::Specification.new do |s|
   s.bindir        = 'bin'
 
   s.add_runtime_dependency 'gli', '~> 1.6.0', '>= 1.6.0'
-  s.add_runtime_dependency 'rainbow', '~> 3.0.0', '>= 3.0.0'
 end

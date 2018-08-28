@@ -1,6 +1,5 @@
 $:.push File.expand_path(File.dirname(__FILE__))
 
-require 'rainbow'
 require 'gli'
 require 'gli_version'
 require 'iisconfig/version'
