@@ -1,11 +1,10 @@
 $:.push File.expand_path(File.dirname(__FILE__))
 
 require 'gli'
-require 'gli_version'
 require 'iisconfig/version'
 require 'iisconfig/configuration'
 
-include GLI
+include GLI::App
 
 program_desc 'Configures IIS on Windows'
 
